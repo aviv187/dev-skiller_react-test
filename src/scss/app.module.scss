@@ -1,0 +1,11 @@
+@import './colors.scss';
+
+html, body, body > div {
+  height: 100%;
+}
+
+.App {
+  background-color: $backroung-color;
+  height: 100%;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}

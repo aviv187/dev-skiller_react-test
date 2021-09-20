@@ -1,0 +1,8 @@
+@import './colors.scss';
+
+.header {
+  background-color: $main-color;
+  padding: 20px 40px;
+  font-size: 30px;
+  font-weight: bold;
+}
