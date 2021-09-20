@@ -67,7 +67,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ closeFunc }) => {
       </div>
       <div className={styles.row}>
         <label>Price: </label>
-        <input name='price' type='number' placeholder='Product Price' />
+        <input name='price' type='number' min={0} placeholder='Product Price' />
       </div>
       <div className={styles.button} onClick={saveProduct}>Save</div>
     </form>
