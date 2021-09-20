@@ -26,6 +26,9 @@
 
       img {
         width: 150px;
+        border: 1px solid $main-color;
+        border-radius: 5px;
+        background-color: $backroung-color;
       }
 
       &.selected {
@@ -38,10 +41,23 @@
     display: flex;
     flex-direction: row;
     column-gap: 20px;
+    margin-bottom: 15px;
+
+    input {
+    color: $main-color;
+    border: none;
+    width: 240px;
+    font-size: 14px;
+    padding: 4px 5px;
+    border-radius: 5px;
+
+      &:focus {
+        outline: none;
+      }
+    }
   }
 
   button {
-    margin-bottom: 15px;
     background-color: $main-color;
     color: $text-color;
     border: none;

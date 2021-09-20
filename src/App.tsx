@@ -7,16 +7,36 @@ import Header from './components/header';
 import Body from './components/body';
 
 import styles from './scss/app.module.scss';
+import { Product } from './modules/product';
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const pruducts: any = localStorage.getItem('products') ?? [];
+    const getData = async () => {
+      setTimeout(() => {
+        let pruducts: any = localStorage.getItem('products');
 
-    // search for products in the local storage and set them
-    if (pruducts)
-      dispatch(setProducts(JSON.parse(pruducts)));
+        // search for products in the local storage and set them
+        if (!pruducts) {
+          // set some demo data
+          const demoData: Product[] = [
+            { name: 'products 1', image: 'some url', description: 'black', price: 10 },
+            { name: 'products 2', image: 'some url', description: 'pink', price: 100 },
+            { name: 'products 3', image: 'some url', description: 'blue', price: 1 }
+          ];
+
+          dispatch(setProducts(demoData));
+
+          localStorage.setItem('products', JSON.stringify(demoData));
+        } else {
+          dispatch(setProducts(JSON.parse(pruducts)));
+        }
+
+      }, 1000);
+    }
+
+    getData();
   }, [dispatch]);
 
   return (

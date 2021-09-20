@@ -1,29 +1,33 @@
+import { Product } from "../modules/product";
+
 export const products = (state: any = [], action: any) => {
   switch (action.type) {
     case 'SET_PRODUCTS':
       return action.products;
 
     case 'ADD_PRODUCT':
-      state.push(action.product);
-      return state;
+      const newState1 = [...state];
+      newState1.push(action.product);
+      return newState1;
 
     case 'REMOVE_PRODUCT':
-      state.splice(action.int, 1)
-      return state;
+      const newState = [...state];
+      newState.splice(action.int, 1)
+      return newState;
 
     default:
       return state;
   }
 }
 
-export const setProducts = (products: any) => {
+export const setProducts = (products: Product[]) => {
   return {
     type: 'SET_PRODUCTS',
     products
   }
 }
 
-export const addProduct = (product: any) => {
+export const addProduct = (product: Product) => {
   return {
     type: 'ADD_PRODUCT',
     product
