@@ -1,5 +1,6 @@
 import React from 'react';
 
+import CreateProduct from './components/ceatreProduct';
 import Header from './components/header';
 
 import styles from './scss/app.module.scss'
@@ -7,9 +8,8 @@ import styles from './scss/app.module.scss'
 function App() {
   return (
     <div className={styles.App}>
-      <header className="App-header">
-        <Header></Header>
-      </header>
+      <Header></Header>
+      <CreateProduct />
     </div>
   );
 }

@@ -1,0 +1,48 @@
+@import './colors.scss';
+
+.form {
+  width: 500px;
+  max-width: 500px;
+  background-color: $box-color;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  border-radius: 15px;
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    
+    label {
+      width: 30%;
+      font-weight: bolder;
+    }
+
+    input {
+      height: 20px;
+      width: 70%;
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  .button {
+    background-color: $main-color;
+    color: $text-color;
+    border: none;
+    width: fit-content;
+    font-size: 18px;
+    font-weight: bolder;
+    padding: 10px 15px;
+    border-radius: 10px;
+  }
+}
