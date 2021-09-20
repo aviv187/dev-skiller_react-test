@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux'
 
 import styles from '../scss/body.module.scss'
-import CreateProduct from './ceatreProduct';
+import ProductForm from './productForm';
 
 const Body = () => {
   const products: {
-    img: string;
+    image: string;
     name: string;
     description: string;
     price: number;
@@ -19,17 +19,19 @@ const Body = () => {
       <button onClick={() => setAddProduct(!addProduct)}>Add Product +</button>
       <div className={styles.row}>
         <div className={styles.products_list}>
-          {products.map((prod, i) => {
+          {products.length > 0 ? products.map((prod, i) => {
             return <div key={`${prod.name} ${i}`} className={styles.item}>
-              <img src={prod.img} alt='Pruduct' />
-              <div>
-                <div>{prod.name} - {prod.price}$</div>
-                <div>{prod.description}</div>
-              </div>
+              <div className={styles.row}>
+                <img src={prod.image} alt='Pruduct' />
+                <div>
+                  <div className={styles.title}>{prod.name} - {prod.price.toLocaleString()}$</div>
+                  <div>{prod.description}</div>
+                </div></div>
+              <button>delete</button>
             </div>
-          })}
+          }) : 'Products List is empty'}
         </div>
-        {addProduct && <CreateProduct />}
+        {addProduct && <ProductForm closeFunc={() => setAddProduct(false)} />}
       </div>
     </div>
   );

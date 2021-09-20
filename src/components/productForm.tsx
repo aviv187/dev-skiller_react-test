@@ -2,20 +2,26 @@ import React, { ChangeEvent, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addProduct } from '../redux/products';
 
-import styles from '../scss/form.module.scss'
+import styles from '../scss/form.module.scss';
 
-const CreateProduct = () => {
+interface ProductFormProps {
+  closeFunc: Function
+}
+
+const ProductForm: React.FC<ProductFormProps> = ({ closeFunc }) => {
   const dispatch = useDispatch();
 
   const [img, setImg] = useState<string | undefined>();
 
-  const formRef = useRef<HTMLFormElement>(null)
+  const formRef = useRef<HTMLFormElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const imageInput: any = event.target;
 
     if (imageInput.files && imageInput.files[0]) {
       const img = imageInput.files[0];
+
       setImg(URL.createObjectURL(img));
     }
   };
@@ -23,25 +29,33 @@ const CreateProduct = () => {
   const saveProduct = () => {
     const inputs: any = formRef.current!.elements;
 
-    const image = inputs.image.value;
+    const image = imageRef.current;
     const name = inputs.name.value.replace(/\s+/g, ' ').trim();;
     const description = inputs.description.value.replace(/\s+/g, ' ').trim();;
     const price = inputs.price.value;
 
-    if (image === '' || name === '' || description === '' || price === '') {
+    if (!image || name === '' || description === '' || price === '') {
       alert('All Fields Must be filled');
       return;
     }
 
-    dispatch(addProduct({ image, name, description, price }));
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx!.drawImage(image, 0, 0, image.offsetWidth, image.offsetHeight);
+
+    const imgUrl = canvas.toDataURL();
+
+    dispatch(addProduct({ image: imgUrl, name, description, price }));
+
+    closeFunc()
   }
 
   return (
     <form ref={formRef} className={styles.form}>
-      {img && <img src={img} alt='product' />}
+      {img && <img ref={imageRef} src={img} alt='product' />}
       <div className={styles.row}>
         <label>Select Image:</label>
-        <input type="file" accept="image/*" name='image' onChange={onImageChange} />
+        <input type="file" accept="image/*" onChange={onImageChange} />
       </div>
       <div className={styles.row}>
         <label>Name: </label>
@@ -60,4 +74,4 @@ const CreateProduct = () => {
   );
 }
 
-export default CreateProduct;
+export default ProductForm;
