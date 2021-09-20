@@ -45,7 +45,16 @@ const ProductForm: React.FC<ProductFormProps> = ({ closeFunc }) => {
 
     const imgUrl = canvas.toDataURL();
 
+    // add item to redux
     dispatch(addProduct({ image: imgUrl, name, description, price }));
+
+    // add item to local storage
+    const storage: any = localStorage.getItem('products') ?? [];
+    const storageProducts = storage.length === 0 ? storage : JSON.parse(storage);
+
+    storageProducts.push({ image: imgUrl, name, description, price });
+
+    localStorage.setItem('products', JSON.stringify(storageProducts));
 
     closeFunc()
   }
