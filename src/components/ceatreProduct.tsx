@@ -1,8 +1,12 @@
 import React, { ChangeEvent, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addProduct } from '../redux/products';
 
 import styles from '../scss/form.module.scss'
 
 const CreateProduct = () => {
+  const dispatch = useDispatch();
+
   const [img, setImg] = useState<string | undefined>();
 
   const formRef = useRef<HTMLFormElement>(null)
@@ -29,10 +33,7 @@ const CreateProduct = () => {
       return;
     }
 
-    console.log(image)
-    console.log(name)
-    console.log(description)
-    console.log(price)
+    dispatch(addProduct({ image, name, description, price }));
   }
 
   return (

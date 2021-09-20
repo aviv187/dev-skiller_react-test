@@ -2,7 +2,6 @@
 
 .form {
   width: 500px;
-  max-width: 500px;
   background-color: $box-color;
   padding: 20px;
   display: flex;
@@ -44,5 +43,6 @@
     font-weight: bolder;
     padding: 10px 15px;
     border-radius: 10px;
+    cursor: pointer;
   }
 }

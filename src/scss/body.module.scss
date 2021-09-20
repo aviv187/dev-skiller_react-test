@@ -1,0 +1,39 @@
+@import './colors.scss';
+
+.body {
+  margin: 30px;
+
+  .products_list {
+    display: flex;
+    flex-direction: column;
+   row-gap: 10px;
+   margin-top: 15px;
+
+    .item {
+      width: 500px;
+      background-color: $box-color;
+      padding: 10px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: row;
+      column-gap: 30px;
+    }
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    column-gap: 20px;
+  }
+
+  button {
+    background-color: $main-color;
+    color: $text-color;
+    border: none;
+    width: fit-content;
+    font-size: 14px;
+    font-weight: bolder;
+    padding: 5px 15px;
+    border-radius: 5px;
+  }
+}
