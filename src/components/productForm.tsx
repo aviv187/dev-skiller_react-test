@@ -48,13 +48,15 @@ const ProductForm: React.FC<ProductFormProps> = ({ closeFunc, oldProduct }) => {
 
     let imgUrl: string;
 
-    // check if the user change the pisture (for the upadte)
+    // check if the user change the picture (for the upadte)
     if (inputs.image.value === '') {
       imgUrl = oldProduct!.product.image
     } else {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
-      ctx!.drawImage(image, 0, 0, image.width, image.height);
+      ctx!.canvas.width = image.width;
+      ctx!.canvas.height = image.height;
+      ctx!.drawImage(image, 0, 0);
 
       imgUrl = canvas.toDataURL();
     }

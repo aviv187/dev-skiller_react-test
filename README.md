@@ -4,6 +4,5 @@ A simple product management app where a user can create and delete products.
 
 # open issues
 
-The demo data at the start don't have a real picture url.
-
-problem with the picture size
+- If the picture is too big the app will crop it.
+- The demo data don't have real pictures.

@@ -21,9 +21,9 @@ function App() {
         if (!pruducts) {
           // set some demo data
           const demoData: Product[] = [
-            { name: 'products 1', image: 'some url', description: 'black', price: 10 },
-            { name: 'products 2', image: 'some url', description: 'pink', price: 100 },
-            { name: 'products 3', image: 'some url', description: 'blue', price: 1 }
+            { name: 'products 1', image: 'some-url', description: 'black', price: 10 },
+            { name: 'products 2', image: 'some-url', description: 'pink', price: 100 },
+            { name: 'products 3', image: 'some-url', description: 'blue', price: 1 }
           ];
 
           dispatch(setProducts(demoData));
