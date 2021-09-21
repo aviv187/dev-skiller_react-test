@@ -15,6 +15,11 @@ export const products = (state: any = [], action: any) => {
       newState.splice(action.int, 1)
       return newState;
 
+    case 'EDIT_PRODUCT':
+      const newState2 = [...state];
+      newState2.splice(action.int, 1, action.product)
+      return newState2;
+
     default:
       return state;
   }
@@ -37,6 +42,14 @@ export const addProduct = (product: Product) => {
 export const removeProduct = (int: number) => {
   return {
     type: 'REMOVE_PRODUCT',
+    int
+  }
+}
+
+export const editProduct = (int: number, product: Product) => {
+  return {
+    type: 'EDIT_PRODUCT',
+    product,
     int
   }
 }

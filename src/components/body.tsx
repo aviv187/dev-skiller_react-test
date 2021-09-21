@@ -21,7 +21,12 @@ const Body = () => {
   return (
     <div className={styles.body} >
       <div className={styles.row}>
-        <button onClick={() => setAddProduct(!addProduct)}>Add Product +</button>
+        <button
+          onClick={() => {
+            setAddProduct(!addProduct);
+            setSelectedProd(null);
+          }}
+        >Add Product +</button>
         {/* filter input */}
         <input type="text" onChange={e => { setFilter(e.target.value) }} placeholder='Filter by Product Name' />
       </div>
@@ -34,8 +39,14 @@ const Body = () => {
                 key={`${prod.name} ${i}`}
                 className={`${styles.item} ${selectedProd === i && styles.selected}`}
                 onClick={e => {
+                  // selecting/unselecting the product if it's not on the delete button
                   if (!(e.target instanceof HTMLButtonElement)) {
-                    setSelectedProd(i);
+                    setAddProduct(false);
+                    if (selectedProd === i) {
+                      setSelectedProd(null);
+                    } else {
+                      setSelectedProd(i);
+                    }
                   }
                 }}>
                 <div className={styles.row}>
@@ -46,6 +57,7 @@ const Body = () => {
                     <div className={styles.title} >{prod.price.toLocaleString()}$</div>
                   </div></div>
                 <button onClick={() => {
+                  // make sure the selected prod will not chake due to numbers change
                   if (selectedProd === i) {
                     setSelectedProd(null);
                   } else if (selectedProd && selectedProd > i) {
@@ -68,7 +80,14 @@ const Body = () => {
 
           }) : 'Products List is empty'}
         </div>
-        {addProduct && <ProductForm closeFunc={() => setAddProduct(false)} />}
+        {selectedProd !== null ?
+          // uptade prod
+          <ProductForm
+            closeFunc={() => setSelectedProd(null)}
+            oldProduct={{ product: products[selectedProd], key: selectedProd }}
+          />
+          // create prod
+          : addProduct && <ProductForm closeFunc={() => { setAddProduct(false) }} />}
       </div>
     </div>
   );

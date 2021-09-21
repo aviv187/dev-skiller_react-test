@@ -1,14 +1,21 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addProduct } from '../redux/products';
+
+import { addProduct, editProduct } from '../redux/products';
 
 import styles from '../scss/form.module.scss';
 
+import { Product } from '../modules/product';
+
 interface ProductFormProps {
-  closeFunc: Function
+  closeFunc: Function;
+  oldProduct?: {
+    key: number,
+    product: Product
+  };
 }
 
-const ProductForm: React.FC<ProductFormProps> = ({ closeFunc }) => {
+const ProductForm: React.FC<ProductFormProps> = ({ closeFunc, oldProduct }) => {
   const dispatch = useDispatch();
 
   const [img, setImg] = useState<string | undefined>();
@@ -39,44 +46,77 @@ const ProductForm: React.FC<ProductFormProps> = ({ closeFunc }) => {
       return;
     }
 
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    ctx!.drawImage(image, 0, 0, image.offsetWidth, image.offsetHeight);
+    let imgUrl: string;
 
-    const imgUrl = canvas.toDataURL();
+    // check if the user change the pisture (for the upadte)
+    if (inputs.image.value === '') {
+      imgUrl = oldProduct!.product.image
+    } else {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      ctx!.drawImage(image, 0, 0, image.width, image.height);
 
-    // add item to redux
-    dispatch(addProduct({ image: imgUrl, name, description, price }));
+      imgUrl = canvas.toDataURL();
+    }
 
-    // add item to local storage
-    const storage: any = localStorage.getItem('products') ?? [];
-    const storageProducts = storage.length === 0 ? storage : JSON.parse(storage);
+    const storage: any = localStorage.getItem('products');
+    const storageProducts = JSON.parse(storage);
 
-    storageProducts.push({ image: imgUrl, name, description, price });
+    if (oldProduct) {
+      // adit item in redux
+      if (imgUrl === oldProduct.product.image &&
+        name === oldProduct.product.name &&
+        description === oldProduct.product.description &&
+        price === oldProduct.product.price) {
+        alert('Nothing changed!');
+        return;
+      }
 
-    localStorage.setItem('products', JSON.stringify(storageProducts));
+      dispatch(editProduct(oldProduct.key, { image: imgUrl, name, description, price }));
+
+      // edit item in local storage
+      storageProducts.splice(oldProduct.key, 1, { image: imgUrl, name, description, price });
+      localStorage.setItem('products', JSON.stringify(storageProducts));
+
+      closeFunc();
+    } else {
+      // add item to redux
+      dispatch(addProduct({ image: imgUrl, name, description, price }));
+
+      // add item to local storage
+      storageProducts.push({ image: imgUrl, name, description, price });
+      localStorage.setItem('products', JSON.stringify(storageProducts));
+    }
 
     closeFunc()
   }
 
+  useEffect(() => {
+    if (oldProduct) {
+      setImg(oldProduct.product.image);
+    } else {
+      setImg(undefined);
+    }
+  }, [oldProduct])
+
   return (
-    <form ref={formRef} className={styles.form}>
+    <form ref={formRef} className={styles.form} key={`${oldProduct?.product.name} ${oldProduct?.key}`}>
       {img && <img ref={imageRef} src={img} alt='product' />}
       <div className={styles.row}>
         <label>Select Image:</label>
-        <input type="file" accept="image/*" onChange={onImageChange} />
+        <input type="file" accept="image/*" onChange={onImageChange} name='image' />
       </div>
       <div className={styles.row}>
         <label>Name: </label>
-        <input name='name' type='text' placeholder='Product Name' />
+        <input name='name' type='text' placeholder='Product Name' defaultValue={oldProduct?.product.name} />
       </div>
       <div className={styles.row}>
         <label>Description: </label>
-        <input name='description' type='text' placeholder='Product Description' />
+        <input name='description' type='text' placeholder='Product Description' defaultValue={oldProduct?.product.description} />
       </div>
       <div className={styles.row}>
         <label>Price: </label>
-        <input name='price' type='number' min={0} placeholder='Product Price' />
+        <input name='price' type='number' min={0} placeholder='Product Price' defaultValue={oldProduct?.product.price} />
       </div>
       <div className={styles.button} onClick={saveProduct}>Save</div>
     </form>
